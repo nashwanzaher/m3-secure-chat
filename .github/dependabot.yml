@@ -1,0 +1,51 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    groups:
+      radix:
+        patterns:
+          - '@radix-ui/*'
+      react:
+        patterns:
+          - 'react'
+          - 'react-dom'
+          - '@types/react*'
+    labels:
+      - dependencies
+      - npm
+
+  - package-ecosystem: pip
+    directory: /proxy
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - python
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+    labels:
+      - dependencies
+      - github-actions
+
+  - package-ecosystem: docker
+    directory: /proxy
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies
+      - docker

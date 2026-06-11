@@ -1,0 +1,20 @@
+# CODEOWNERS — automatically requested as reviewers on each PR.
+# Order matters: the last matching pattern wins.
+
+# Default owners for everything in the repo
+*                          @nashwanzaher
+
+# Frontend
+/src/                      @nashwanzaher
+/src/lib/                  @nashwanzaher
+
+# Backend proxy
+/proxy/                    @nashwanzaher
+
+# CI / deploys
+/.github/                  @nashwanzaher
+
+# Security-sensitive — require an extra review
+/SECURITY.md               @nashwanzaher
+/.env.example              @nashwanzaher
+/render.yaml               @nashwanzaher
