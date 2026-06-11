@@ -1,0 +1,31 @@
+# Ruff configuration for the proxy. Linting and formatting are handled by
+# ruff itself — no need for flake8/black/isort alongside it.
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["__pycache__", ".venv"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "S",   # flake8-bandit (security)
+    "C4",  # flake8-comprehensions
+]
+ignore = [
+    "S101",  # Use of assert (fine in tests)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"test_*.py" = ["S", "B"]  # tests can do unsafe things
+"conftest.py" = ["S"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
