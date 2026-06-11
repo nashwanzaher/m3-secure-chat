@@ -1,0 +1,31 @@
+# .dockerignore
+# Anything that should NEVER end up in a build context.
+
+node_modules
+dist
+dist-ssr
+coverage
+.pnpm-store
+.git
+.gitignore
+.github
+.vscode
+.idea
+.DS_Store
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+api-keys.txt
+
+# Tests
+**/*.test.ts
+**/*.test.tsx
+**/*.test.js
+**/*.test.jsx
+src/test/
+coverage/

@@ -1,0 +1,57 @@
+# docker-compose.yml
+# Run the full stack locally: SPA on http://localhost:8080,
+# proxy on http://localhost:8000. The SPA's "Proxy URL" setting in the UI
+# should be http://localhost:8000/v1/chat (the browser will hit it directly).
+#
+# Usage:
+#   cp proxy/.env.example proxy/.env   # then put your real M3_API_KEY in proxy/.env
+#   docker compose up --build
+#
+# Production: see docs/DEPLOYMENT.md.
+
+services:
+  proxy:
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    container_name: m3-proxy
+    restart: unless-stopped
+    env_file:
+      - ./proxy/.env
+    environment:
+      - M3_BASE_URL=${M3_BASE_URL:-https://api.MiniMax.io/v1}
+      - M3_API_KEY=${M3_API_KEY:?M3_API_KEY is required - set it in proxy/.env}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8080,http://localhost:5173}
+      - RATE_LIMIT_PER_MIN=${RATE_LIMIT_PER_MIN:-60}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: m3-frontend
+    restart: unless-stopped
+    depends_on:
+      proxy:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+    security_opt:
+      - no-new-privileges:true
