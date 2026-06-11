@@ -1,12 +1,17 @@
 /**
  * Vitest global setup.
  *
- * - Imports jest-dom matchers so we can use toBeInTheDocument, etc.
+ * - Manually registers `@testing-library/jest-dom` matchers with
+ *   vitest's `expect.extend`. This avoids the bare `import 'vitest'`
+ *   inside jest-dom's vitest.mjs subpath, which breaks under pnpm's
+ *   strict isolated `node_modules` layout.
  * - Mocks browser APIs that jsdom does not provide (matchMedia, clipboard).
  * - Resets localStorage between tests.
  */
-import '@testing-library/jest-dom/vitest'
-import { afterEach, beforeEach, vi } from 'vitest'
+import { expect, afterEach, beforeEach, vi } from 'vitest'
+import * as matchers from '@testing-library/jest-dom/matchers'
+
+expect.extend(matchers)
 
 // jsdom does not implement matchMedia
 if (typeof window !== 'undefined' && !window.matchMedia) {
