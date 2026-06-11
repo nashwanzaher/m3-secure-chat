@@ -1,0 +1,41 @@
+name: Deploy M3 Proxy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'proxy/**'
+      - '.github/workflows/deploy-proxy.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./proxy
+          file: ./proxy/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/m3-proxy:latest
+
+  # IMPORTANT: never echo or hardcode M3_API_KEY in this file.
+  # The M3_API_KEY is read from GitHub repository secrets only at deploy time
+  # by the hosting platform (Render, Fly, Railway, Cloud Run, etc.).
+  #
+  # To set it: Settings -> Secrets and variables -> Actions -> New repository secret
+  # Name: M3_API_KEY
+  # Value: sk-...your real key...

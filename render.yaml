@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: m3-proxy
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    dockerfilePath: ./proxy/Dockerfile
+    dockerContext: ./proxy
+    envVars:
+      - key: M3_API_KEY
+        sync: false          # set this in the Render dashboard, never in git
+      - key: M3_BASE_URL
+        value: https://api.MiniMax.com
+      - key: ALLOWED_ORIGINS
+        sync: false          # paste your frontend URL in the dashboard
+      - key: RATE_LIMIT_PER_MIN
+        value: "60"
+      - key: M3_TIMEOUT_SECONDS
+        value: "60"
+      - key: PORT
+        value: "8000"
