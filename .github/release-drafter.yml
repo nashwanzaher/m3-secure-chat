@@ -1,0 +1,33 @@
+# Release Drafter configuration
+# Groups PRs by label into the next release notes.
+# Enable in Settings -> Actions -> "Release Drafter" permissions.
+
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+version-resolver:
+  major:
+    labels: ['breaking']
+  minor:
+    labels: ['feat', 'enhancement']
+  patch:
+    labels: ['fix', 'bug', 'chore', 'docs']
+  default: patch
+categories:
+  - title: 🚀 Features
+    labels: ['feat', 'enhancement']
+  - title: 🐛 Bug Fixes
+    labels: ['fix', 'bug']
+  - title: 📝 Documentation
+    labels: ['docs']
+  - title: 🔧 Maintenance
+    labels: ['chore', 'dependencies', 'refactor']
+  - title: 🔐 Security
+    labels: ['security']
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
+exclude-labels: ['skip-changelog']
+template: |
+  ## Changes
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION

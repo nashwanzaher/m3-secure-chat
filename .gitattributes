@@ -1,0 +1,31 @@
+# .gitattributes
+# Make `git diff` and GitHub render diffs sensibly for various files.
+
+*               text=auto eol=lf
+
+# Source code
+*.ts            text diff=typescript
+*.tsx           text diff=typescript
+*.js            text
+*.jsx           text
+*.json          text
+*.css           text
+*.html          text
+*.md            text
+*.py            text diff=python
+*.yml           text
+*.yaml          text
+*.toml          text
+
+# Lockfiles — keep them diff-friendly but don't reformat
+pnpm-lock.yaml  text eol=lf
+package-lock.json text eol=lf
+
+# Binary
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+*.webp          binary
+*.ico           binary
+*.woff2         binary

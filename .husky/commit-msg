@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# .husky/commit-msg
+# Enforce Conventional Commits format. Bypass with `--no-verify`.
+
+npx --yes commitlint --edit "$1"

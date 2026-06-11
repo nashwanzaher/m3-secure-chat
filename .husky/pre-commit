@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# .husky/pre-commit
+# Runs lint-staged on changed files, then typecheck + tests on the whole
+# project as a final guard. Bypass with `git commit --no-verify` only if
+# you know what you're doing.
+
+pnpm exec lint-staged
+pnpm typecheck
+pnpm test -- --run
